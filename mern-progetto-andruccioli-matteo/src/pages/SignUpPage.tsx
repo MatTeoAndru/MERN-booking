@@ -6,13 +6,19 @@ export default function SignUpPage(){
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    function SignUpUser(ev: { preventDefault: () => void; }) {
+    async function SignUpUser(ev: { preventDefault: () => void; }) {
         ev.preventDefault();
-        axios.post("/register",{
-            name,
-            email,
-            password,
-        });
+        try {
+            axios.post("/register",{
+                name,
+                email,
+                password,
+            });
+            alert('Registrazione avvenuta con successo!')
+        } catch (error) {
+            alert('Registrazione fallita  ')
+        }
+
     }
     return (
         <div className="mt-4 grow flex items-center justify-around">
@@ -30,7 +36,7 @@ export default function SignUpPage(){
                             onChange={ev => setPassword(ev.target.value)}/>
                     <button className="primary">Registrati</button>
                     <div className="text-center py-2 text-gray-500">
-                        Gia' iscritto? <Link className="underline text-black" to={"/signup"}>Registrati</Link>
+                        Gia' iscritto? <Link className="underline text-black" to={"/signup"}>Accedi</Link>
                     </div>
                 </form>
             </div>   

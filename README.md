@@ -14,6 +14,9 @@ yarn add express
 nodemon index.js
 node index.js
 npm install -g nodemon 
+Per cryptare password quando la inseriamo nel form
+yarn add bcryptjs
+yarn add jsonwebtoken
 
 Per risolvere problema CORS
 yarn add cors
