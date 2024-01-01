@@ -36,7 +36,7 @@ export default function SignUpPage(){
                             onChange={ev => setPassword(ev.target.value)}/>
                     <button className="primary">Registrati</button>
                     <div className="text-center py-2 text-gray-500">
-                        Gia' iscritto? <Link className="underline text-black" to={"/signup"}>Accedi</Link>
+                        Gia' iscritto? <Link className="underline text-black" to={"/login"}>Accedi</Link>
                     </div>
                 </form>
             </div>   

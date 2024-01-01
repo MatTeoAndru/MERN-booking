@@ -17,6 +17,7 @@ npm install -g nodemon
 Per cryptare password quando la inseriamo nel form
 yarn add bcryptjs
 yarn add jsonwebtoken
+yarn add cookie-parser
 
 Per risolvere problema CORS
 yarn add cors

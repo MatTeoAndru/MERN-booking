@@ -3,6 +3,7 @@ const cors = require('cors');
 const { default: mongoose } = require("mongoose");
 //Importo models schema
 const User = require('./models/User.js');
+const cookieParser = require('cookie-parser');
 //Crypt psw in chiaro
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -12,6 +13,7 @@ require('dotenv').config();
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors({
     credentials: true,
     origin: 'http://localhost:5173',
@@ -47,9 +49,13 @@ app.post("/login" , async (req,res) => {
     if (userDoc){
         const checkPassword = bcrypt.compareSync(password, userDoc.password);
         if (checkPassword){
-            jwt.sign({email:userDoc.email , id:userDoc._id}, jwtsecret , {} , (err,token) => {
+            jwt.sign({
+
+                email:userDoc.email,
+                id:userDoc._id
+            },jwtsecret , {} , (err,token) => {
                 if  (err) throw err;
-                res.cookie('token' , token).json('pass ok');
+                res.cookie('token' , token).json(userDoc);
             });
         }
         else{
@@ -60,5 +66,19 @@ app.post("/login" , async (req,res) => {
     }
 } );
 
-app.listen(4000);
+app.get('/profile' , (req, res) => {
+    const {token} = req.cookies;
+    if (token) {
+        jwt.verify(token, jwtsecret,  {} , async (err, user) => {
+            if (err) throw  err;
+            const userDoc = await User.findById(user.id);
+            //const {name,email,id}
+            res.json(userDoc);
+        })
+    } else {
+        res.json(null);
+    }
+} )
 
+
+app.listen(4000);
