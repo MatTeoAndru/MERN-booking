@@ -9,22 +9,25 @@ import { createContext, ReactNode, Dispatch, SetStateAction, useState, useEffect
 interface UserContextProps {
   user: any; 
   setUser: Dispatch<SetStateAction<any>>;
+  ready: any;
 }
 
 export const UserContext = createContext<UserContextProps>({
   user: null,
   setUser: () => {},
+  ready: null
 });
 
 export function UserContextProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<any>(null);
-
+  const [ready, setReady] = useState<any>(null);
   //attualmente la chiamata viene effettuata due volte perche' siamo in dev mode strict
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
         const response = await axios.get('/profile');
         setUser(response.data);
+        setReady(true);
       } catch (error) {
         console.error('Errore durante la richiesta del profilo:', error);
       }
@@ -34,7 +37,7 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
     }
   }, [user]);
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser , ready}}>
       {children}
     </UserContext.Provider>
   );
